@@ -27,8 +27,8 @@ local ThemeManager = {} do
 		for idx, col in next, customThemeData or scheme do
 			self.Library[idx] = Color3.fromHex(col)
 			
-			if Options[idx] then
-				Options[idx]:SetValueRGB(Color3.fromHex(col))
+			if options[idx] then
+				options[idx]:SetValueRGB(Color3.fromHex(col))
 			end
 		end
 
