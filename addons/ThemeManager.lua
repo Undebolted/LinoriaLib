@@ -39,8 +39,8 @@ local ThemeManager = {} do
 		-- This allows us to force apply themes without loading the themes tab :)
 		local options = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
 		for i, field in next, options do
-			if Options and Options[field] then
-				self.Library[field] = Options[field].Value
+			if options and options[field] then
+				self.Library[field] = options[field].Value
 			end
 		end
 
@@ -65,7 +65,7 @@ local ThemeManager = {} do
 		end
 
 		if isDefault then
-			Options.ThemeManager_ThemeList:SetValue(theme)
+			options.ThemeManager_ThemeList:SetValue(theme)
 		else
 			self:ApplyTheme(theme)
 		end
@@ -93,12 +93,12 @@ local ThemeManager = {} do
 		groupbox:AddDropdown('ThemeManager_ThemeList', { Text = 'Theme list', Values = ThemesArray, Default = 1 })
 
 		groupbox:AddButton('Set as default', function()
-			self:SaveDefault(Options.ThemeManager_ThemeList.Value)
-			self.Library:Notify(string.format('Set default theme to %q', Options.ThemeManager_ThemeList.Value))
+			self:SaveDefault(options.ThemeManager_ThemeList.Value)
+			self.Library:Notify(string.format('Set default theme to %q', options.ThemeManager_ThemeList.Value))
 		end)
 
-		Options.ThemeManager_ThemeList:OnChanged(function()
-			self:ApplyTheme(Options.ThemeManager_ThemeList.Value)
+		options.ThemeManager_ThemeList:OnChanged(function()
+			self:ApplyTheme(options.ThemeManager_ThemeList.Value)
 		end)
 
 		groupbox:AddDivider()
@@ -107,23 +107,23 @@ local ThemeManager = {} do
 		groupbox:AddDivider()
 		
 		groupbox:AddButton('Save theme', function() 
-			self:SaveCustomTheme(Options.ThemeManager_CustomThemeName.Value)
+			self:SaveCustomTheme(options.ThemeManager_CustomThemeName.Value)
 
-			Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
-			Options.ThemeManager_CustomThemeList:SetValue(nil)
+			options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
+			options.ThemeManager_CustomThemeList:SetValue(nil)
 		end):AddButton('Load theme', function() 
-			self:ApplyTheme(Options.ThemeManager_CustomThemeList.Value) 
+			self:ApplyTheme(options.ThemeManager_CustomThemeList.Value) 
 		end)
 
 		groupbox:AddButton('Refresh list', function()
-			Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
-			Options.ThemeManager_CustomThemeList:SetValue(nil)
+			options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
+			options.ThemeManager_CustomThemeList:SetValue(nil)
 		end)
 
 		groupbox:AddButton('Set as default', function()
-			if Options.ThemeManager_CustomThemeList.Value ~= nil and Options.ThemeManager_CustomThemeList.Value ~= '' then
-				self:SaveDefault(Options.ThemeManager_CustomThemeList.Value)
-				self.Library:Notify(string.format('Set default theme to %q', Options.ThemeManager_CustomThemeList.Value))
+			if options.ThemeManager_CustomThemeList.Value ~= nil and options.ThemeManager_CustomThemeList.Value ~= '' then
+				self:SaveDefault(options.ThemeManager_CustomThemeList.Value)
+				self.Library:Notify(string.format('Set default theme to %q', options.ThemeManager_CustomThemeList.Value))
 			end
 		end)
 
@@ -133,11 +133,11 @@ local ThemeManager = {} do
 			self:ThemeUpdate()
 		end
 
-		Options.BackgroundColor:OnChanged(UpdateTheme)
-		Options.MainColor:OnChanged(UpdateTheme)
-		Options.AccentColor:OnChanged(UpdateTheme)
-		Options.OutlineColor:OnChanged(UpdateTheme)
-		Options.FontColor:OnChanged(UpdateTheme)
+		options.BackgroundColor:OnChanged(UpdateTheme)
+		options.MainColor:OnChanged(UpdateTheme)
+		options.AccentColor:OnChanged(UpdateTheme)
+		options.OutlineColor:OnChanged(UpdateTheme)
+		options.FontColor:OnChanged(UpdateTheme)
 	end
 
 	function ThemeManager:GetCustomTheme(file)
@@ -165,7 +165,7 @@ local ThemeManager = {} do
 		local fields = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
 
 		for _, field in next, fields do
-			theme[field] = Options[field].Value:ToHex()
+			theme[field] = options[field].Value:ToHex()
 		end
 
 		writefile(self.Folder .. '/themes/' .. file .. '.json', httpService:JSONEncode(theme))
