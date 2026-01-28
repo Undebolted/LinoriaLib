@@ -1,5 +1,6 @@
 local httpService = game:GetService('HttpService')
 local ThemeManager = {} do
+	local options = { "FontColor", "MainColor", "AccentColor", "BackgroundColor", "OutlineColor" }
 	ThemeManager.Folder = 'LinoriaLibSettings'
 	-- if not isfolder(ThemeManager.Folder) then makefolder(ThemeManager.Folder) end
 
